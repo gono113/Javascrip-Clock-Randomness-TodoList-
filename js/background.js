@@ -13,3 +13,4 @@ const bgImage = document.createElement('img');
 bgImage.src = `img/${chosenImage}`;
 
 document.body.appendChild(bgImage);
+// appenChild = createElement로 생성한 요소를 자식으로 생성해줌(위에선 body의 자식으로)
