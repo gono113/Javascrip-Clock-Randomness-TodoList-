@@ -9,3 +9,7 @@ img {
     z-index: -1;
     opacity: 80%;
 }
+
+#todo-list:empty {
+    display: none;
+}
