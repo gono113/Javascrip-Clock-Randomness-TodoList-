@@ -7,18 +7,22 @@ const TODOS_KEY = 'todos';
 let toDos = [];
 
 function saveToDos() {
-    localStorage.setItem('todos', JSON.stringify(toDos));
+    localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
 }
 
 function deleteToDo(event) {
     const li = event.target.parentElement;
     li.remove();
+    toDos = toDos.filter(toDo => toDo.id !== parseInt(li.id));
+    localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
+    // 한 번 더 setItem으로 저장해주기
 }
 
 function paintToDo(newToDo) {
     const li = document.createElement('li');
+    li.id = newToDo.id;
     const span = document.createElement('span');
-    span.innerText = newToDo;
+    span.innerText = newToDo.text;
     const button = document.createElement('button');
     button.innerText = '❌';
     button.addEventListener('click', deleteToDo);
@@ -31,8 +35,12 @@ function handleToDoSubmit(event) {
     event.preventDefault();
     const newToDo = toDoInput.value;
     toDoInput.value = '';
-    toDos.push(newToDo);
-    paintToDo(newToDo);
+    const newtoDoObj = {
+        text: newToDo,
+        id: Date.now(),
+    };
+    toDos.push(newtoDoObj);
+    paintToDo(newtoDoObj);
     saveToDos();
 }
 toDoForm.addEventListener('submit', handleToDoSubmit);
@@ -48,6 +56,9 @@ if(savedToDos){
     toDos = parsedToDos;
     parsedToDos.forEach(paintToDo);
 }
+
+ 
+
 /**
  * 어레이가 빈값으로 시작하기 떄문에
  * 새로고침시 다시 비어있는 어레이로 돌아감
